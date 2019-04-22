@@ -1,0 +1,17 @@
+its
+During the development of the antitype, proposed a new calculation to seek anomalous area overlapping. 
+
+百度翻译例句库
+
+2
+因为不讨论算法问题，我们对“有效”这一术语不作具体解释。
+
+As we shall not deal with algorithmic problems, we leave the term "efficient" undefined. 
+
+百度翻译例句库
+python
+以下例句来源于网络，仅供参考
+3
+AIX系统中的内部和外部通信使用Unicode编码和算法。
+
+Unicode encodings and algorithms are used for internal and external communications in the AIX system. 
