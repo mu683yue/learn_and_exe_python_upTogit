@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from sign.models import Event,Guest
 
 """
@@ -49,4 +50,14 @@ def search_name(request):
 def guest_manage(request):
 	userrname = request.session.get('user','')
 	guest_list = Guest.objects.all()
+	paginator = Paginator(guest_list,2)  #将查询处的左右嘉宾列表guest_list放到Paginator类中，划分为每页显示2条数据
+	page = request.Get.get('page')#通过GET请求得到当前显示第几页数据
+	try:
+		contacts = paginator.page(page)#获取第page页的数据
+	except PageNotAnInteger:
+		#如果page不是整数，取第一页面数据
+		contacts = paginator.page(1)
+	except EmptyPage:
+		#如果page不在范围，取最后一页面
+		contacts = paginator.page(paginator.num_pages)
 	return render(request,"guest_manage.html",{"user":username,"guests":guest_list})
