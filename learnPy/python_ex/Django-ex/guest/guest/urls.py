@@ -17,7 +17,7 @@ Including another URLconf
 DDjango项目的URL声明
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,re_path
 from sign import views #导入sign应用views文件
 
 urlpatterns = [
@@ -29,4 +29,8 @@ urlpatterns = [
     path('accounts/login/',views.index),#直接跳转到登录页面
     path('search_name/',views.search_name),
     path('guest_manage/',views.guest_manage),
+    #2.0后的django路径中使用正则表达式需要使用re_path()
+    re_path(r'^sign_index/(?P<eid>[0-9]+)$',views.sign_index),#添加签到页面路径的路由
+    re_path(r'^sign_index_action/(?P<eid>[0-9]+)$',views.sign_index_action),#添加签到动作路径的路由
+    path('logout/',views.logout),
 ]

@@ -1,8 +1,9 @@
 #-*- coding:utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login
+#from django.contrib.auth import authenticate,login,logout
+from django.contrib import auth
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from sign.models import Event,Guest
 
@@ -19,9 +20,9 @@ def login_action(request):
 	if request.method == 'POST':
 		username = request.POST.get('username','')
 		password = request.POST.get('password','')
-		user = authenticate(username=username,password=password)
+		user = auth.authenticate(username=username,password=password)
 		if user is not None:
-			login(request,user) #登录
+			auth.login(request,user) #登录
 			#response.set_cookie('user',username,3600)#添加浏览器Cookie
 			request.session['user'] = username #将session信息记录到浏览器
 			response = HttpResponseRedirect("/event_manage/")
@@ -61,3 +62,37 @@ def guest_manage(request):
 		#如果page不在范围，取最后一页面
 		contacts = paginator.page(paginator.num_pages)
 	return render(request,"guest_manage.html",{"user":username,"guests":guest_list})
+
+#签到页面
+@login_required
+def sign_index(request,eid):
+	event = get_object_or_404(Event,id=eid)
+	return render(request,'sign_index.html',{'event':event})
+#签到动作
+@login_required
+def sign_index_action(request,eid):
+	event = get_object_or_404(Event,id=eid)
+	phone = request.POST.get('phone','')
+	print(phone)
+	result = Guest.objects.filter(phone=phone)#查询手机号是否存在，不存在提升“phone error.”
+	if not result:
+		return render(request,'sign_index.html',{'event':event,'hint':'phone error.'})
+
+	result = Guest.objects.filter(phone=phone,event_id=eid)#通过手机号和id来查询Guest表，如果结果为空，说明手机号与发布会不匹配
+	if not result:
+		return render(request,'sign_index.html',{'event':event,'hint':'event id or phone error.'})
+
+	result = Guest.objects.get(phone=phone,event_id=eid)#判断嘉宾签到状态是否为True--代表嘉宾签到过了；否说明嘉宾未签到，修改签到状态为1，并显示嘉宾姓名和手机号
+	if result.sign:
+		return render(result,'sign_index.html',{'event':event,'hint':"user has sign in."})
+	else:
+		Guest.objects.filter(phone=phone,event_id=eid).update(sign=True)
+		return render(request,'sign_index.html',{'event':event,'hint':'sign in success!','guest':result})
+
+#退出登录
+@login_required
+def logout(request):
+	auth.logout(request)  #退出登录,同时可以清除浏览器保存的用户信息
+	response = HttpResponseRedirect('/index/')#退出成功后默认跳转到用户登录页面
+	return response
+
