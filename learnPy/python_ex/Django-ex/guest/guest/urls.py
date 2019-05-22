@@ -18,7 +18,7 @@ DDjango项目的URL声明
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
-from sign import views #导入sign应用views文件
+from sign import views,urls #导入sign应用views文件
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,5 +33,5 @@ urlpatterns = [
     re_path(r'^sign_index/(?P<eid>[0-9]+)$',views.sign_index),#添加签到页面路径的路由
     re_path(r'^sign_index_action/(?P<eid>[0-9]+)$',views.sign_index_action),#添加签到动作路径的路由
     path('logout/',views.logout),
-    re_path(r'^api/',include('sign.urls',namespace="sign")),#web接口url根目录为/api/，通过二级目录表示实现具体 功能的接口
-]
+    path('api/',include(('sign.urls','sign'),namespace="sign")), #web接口url根目录为/api/，通过二级目录表示实现具体 功能的接口
+    ]
