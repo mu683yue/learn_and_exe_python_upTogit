@@ -2,6 +2,7 @@
 # -*- coding:utf-8  -*-
 
 from random import randint
+import math
 
 def chicken():
 
@@ -64,10 +65,12 @@ def Craps():
                     print("庄家胜")
                     money-=debt
                     needs_go_on=False
+                    break
                 elif current==first:
                     print("玩家胜")
                     money+=debt
                     needs_go_on=False
+                    break
     print("你破产了，游戏结束！")
 
 def Fibonacci():
@@ -85,18 +88,173 @@ def Fibonacci():
     for _ in range(num):
         (a,b) = (b,a+b)
         print(a,end=' ')  #效果等同于print("%d " % a)
-                    
 
 
-
-
-
-
-
-
-
+def Guess_num():
+    """
+    猜数字游戏
+    计算机出一个1~100之间的随机数由人来猜
+    计算机根据人猜的数字分别提示大一点\小一点\猜对了
     
+    version：1.0
+    date：2019-5-22
+    """
+    rand_num=randint(1,100)
+    counter = 0
+    while True:
+        counter+=1
+        guess_num=int(input("输入你才的1到100的数字："))
+        if guess_num<1 or guess_num>100:
+            print("数字超出游戏范围！")
+            break
+        if guess_num>rand_num:
+            print("大了")
+        elif guess_num<rand_num:
+            print("小了")
+        else:
+            print("猜对了")
+            break
+    print("您一共猜了%d次！" % counter)
+    if counter > 10:
+        print("笨蛋")
+
+def Daffodil():
+    """
+    找出100~999之间的所有水仙花数
+    水仙花数是各位立法和等于这个数本身的数
+    如：153 = 1**3 + 5**3 + 3**3
+
+    version：1.0
+    date：2019\5\22
+    
+    """
+    for num in range(100,999):
+        low=num%10
+        mid=num//10%10
+        high=num//100
+
+        if num==low**3 + mid**3 + high**3:
+            print(num)
+
+def palindrome():
+    """
+    判断输入的正整数是不会回文数
+    回文数指将一个正整数从左到右排列和从右到左排列是一样的数
+
+    version:1.0
+    date:2019\5\22
+    """
+    num = int(input("请输入正整数"))
+    temp=num
+    num2=0
+    while temp>0:
+        num2*=10
+        num2+=temp%10
+        temp//=10
+    if num==num2:
+        print("%d是回文数"% num)
+    else:
+        print("%d不是回文数"% num)
+
+def perfect_num():
+    """
+    找出1~9999之间的完美数
+    完美数：除自身外的其他所有因子的和正好等于这个数本身的数
+    例如：6=1+2+3,28=1+2+7+14
+
+    version：1.0
+    date：2019\5\22
+    """
+    for num in range(1,9999):
+        sum=0
+        for factor in range(1,int(math.sqrt(num))+1):
+            if num%factor==0:
+                sum +=factor
+                if factor >1 and num/factor!=factor:
+                    sum+=num/factor            
+        if sum==num:
+            print(num)
+
+def yanghui():
+    """
+输出10行的杨辉三角 - 二项式的n次方展开系数
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+... ... ...
+"""
+    num=int(input("Number of rows"))
+    yh = [[]]*num
+    for row in range(len(yh)):
+        yh[row] = [None]*(row-1)
+        for col in range(len(yh[row])):
+            if col==0 or col==row:
+                yh[row][col]=1
+            else:
+                yh[row][col]=yh[row-1][col]+yh[row-1][col-1]
+            print(yh[row][col],end='\t')
+        print()
+        
+    def is_primenumber():
+    """
+    判断输入的数是不是素数
+    """
+    num=int(input('请输入一个正数：'))
+    end = int(sqrt(num))
+    is_prime=True
+    for x in range(2,end+1):
+        if num % x == 0:
+            is_prime=False
+            break
+    if is_prime and num !=1:
+        print('%d是素数'% num)
+    else:
+        print('%d不是素数'% num)
+
+def output_triangle():
+    """
+    打印各种形状的三角形图案
+    """
+    row = int(input('请输入行数：'))
+    for x in range(row):
+        for _ in range(x+1):
+            print('*',end='')
+        print()
+
+    for x in range(row):
+        for y in range(row):
+            if y < row-x-1:
+                print(' ',end='')
+            else:
+                print('*',end='')
+        print()
+        
+    for x in range(row):
+        for _ in range(row-x-1):
+            print(' ',end='')
+        for _ in range(2*x+1):
+            print('*',end='')
+        print()
+    print('打印三角形状图案结束')
+
+def muplication_table():
+    """
+    输出九九乘法表
+    """
+    for i in range(1,10):
+        for j in range(1,i+1):
+            print('%d * %d = %d'%(i,j,i*j),end='\t')
+        print('')
+    print('九九乘法表输出结束')
+               
 if __name__=='__main__':
     #chicken()
     #Craps()
     #Fibonacci()
+    #Guess_num()
+    #Daffodil()
+    #palindrome()
+    #perfect_num()
+    yanghui()
