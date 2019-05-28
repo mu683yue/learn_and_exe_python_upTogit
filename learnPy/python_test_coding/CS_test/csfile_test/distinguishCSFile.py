@@ -10,20 +10,11 @@ import re
 -修改文件名，根据文件名识别企业文件
 -修改文件内容，添加文件关键字，根据关键字识别企业文件
 
+version：1.0
+date：2019\5\25
+author:LHQ
 """
-"""
-class DistinguishCSFile(unittest.TestCase):
-    def setUp(self):
-        r_dir="\\10.10.10.2\guest\software\lin\测试文件\关键字识别不加密文件"
-        t_dir="E:\CS工作\临时测试结果\testfile"
-        t_dir
-        os.chdir(r_dir)
-        os.copy(r_dir,t_dir)
-        pass
-    def tearDown(self):
-        pass
-    def test_notCSFile()
-"""
+
 sourcedir=os.path.abspath(r"\\10.10.10.2\guest\software\\lin\测试文件\关键字识别不加密文件")
 targetdir=os.path.abspath(r"E:\CS工作\临时测试结果\testfile")
 
