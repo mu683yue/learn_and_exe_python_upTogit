@@ -32,7 +32,7 @@ desired_caps={
     "resetKeyboard":True,
     "dontStopAppOnReset":True,
     "autoGrantPermissions":True,
-    "noReset":True,
+    "noReset":True,             #noReset=True后，appium启动后结束后不清空应用数据
     #"automationName":"uiautomator2",
     "newCommandTimeout":"36000",        #超时时间
     #"systemPort":"8202",                #设备端口号，操作不同设备使用不同端口
