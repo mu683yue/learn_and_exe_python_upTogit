@@ -45,7 +45,7 @@ def getNovalList(firstUrl):
         #print(contents_list)
         return contents_list
 
-def getNoval(url):
+def getNoval(url,charSet,titleRe=r"<title>(.*?)</title>",textRe=r'<div id="content">([\s\S]*?)</div>'):
     header=[{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"},
                 ]
     req_header={
@@ -63,9 +63,9 @@ def getNoval(url):
     
     #req=requests.get(url,headers=header[0])
     req=requests.get(url,params=req_header,verify=False)
-    result=req.content.decode("gbk") #获取响应内容，并解码
-    title_re=re.compile(r"<title>(.*?)</title>") #文章标题提取正则
-    text_re=re.compile(r'<div id="content">([\s\S]*?)</div>') #提取正文，由于正文有很多换行符，故要使用[\s\S]
+    result=req.content.decode(charSet) #获取响应内容，并解码
+    title_re=re.compile(titleRe) #文章标题提取正则
+    text_re=re.compile(textRe) #提取正文，由于正文有很多换行符，故要使用[\s\S]
     title= re.findall(title_re,result)#找出标题
     text=re.findall(text_re,result)#找出正文
     title=title[0] #由于返回的title是列表，所以取出title表第一项为文章标题
@@ -88,21 +88,24 @@ if __name__=='__main__':
         https://www.45zw.la/txt/30527/17431132.html  最后一章
         
         """
-        first_url=r"https://www.45zw.la/txt/30527/"
-        list=getNovalList(first_url) #获取小说章节目录主页所有章节的链接号（格式：8位数字.html）
-
-#       test_getNovalContent()
+####        first_url=r"https://www.45zw.la/txt/30527/"
+####        list=getNovalList(first_url) #获取小说章节目录主页所有章节的链接号（格式：8位数字.html）
+####
+#####       test_getNovalContent()
 ##        file=r'D:\LHQ_develop\python_ex\python_exdays\九占'
 ##        fo=open(file,"a+")
-##        for i in range(0,):
-##                url="https://www.45zw.la/txt/30527/"+str(13765644+i)+".html"
+        titleRe = r'<meta name="keywords" content="(.*?)" />'
+        textRe = r'<div id="content"><p>([\s\S]*?)</p></div>'
+        charset="utf-8"
+        for i in range(0,101):
+                url="https://www.smxs.cc/book/mrczfhyf/"+str(10010+10*i)+".html"
+                #print(url)
+                getNoval(url,charset,titleRe=titleRe,textRe=textRe)
+##        #根据章节页来获取小说中正文和标题
+##        for item in list:
+##                url="https://www.45zw.la/txt/30527/"+str(item)
 ##                #print(url)
 ##                getNoval(url)
-        #根据章节页来获取小说中正文和标题
-        for item in list:
-                url="https://www.45zw.la/txt/30527/"+str(item)
-                #print(url)
-                getNoval(url)
 
 
 
