@@ -4,6 +4,7 @@
 """
 -拷贝文件夹下所有文件至目标文件夹 copyFiles
 -拷贝文件夹下某文件至目标文件夹 copyFile
+-移动文件：moveFile:move s_filedir -> d_filedir
 -拷贝文件夹至目标路径 copyFold
 -改文件名和后缀 editFilename
 -创建文件夹 createFold
@@ -16,6 +17,7 @@ import os
 import shutil
 
 
+#-拷贝文件夹下所有文件至目标文件夹 copyFiles
 def copyFiles(sourceDir,targetDir):  
     for f in os.listdir(sourceDir):
         sourceF=os.path.join(sourceDir,f)
@@ -26,6 +28,7 @@ def copyFiles(sourceDir,targetDir):
                 os.makedirs(targetDir)
         shutil.copy(sourceF,targetDir)
 
+-拷贝文件夹下某文件至目标文件夹 copyFile
 def copyFile(sourceDir,targetDir,filename):
     sourceF=os.path.join(sourceDir,filename)
     targetF=os.path.join(targetDir,filename)
@@ -35,8 +38,17 @@ def copyFile(sourceDir,targetDir,filename):
                 os.makedirs(targetDir)
             shutil.copy(sourceF,targetDir)
             
+#-移动文件：moveFile:move s_file -> d_filedir
+def moveFile(s_file,d_filedir):
+	if os.path.isfile(s_file) and os.path.is_dir(d_filedir):
+		shutil.move(s_file,d_filedir)
+		print("moveFile:move %s -> %s "% (s_file,d_filedir))
+	else:
+		print("move fail,please make sure s_file is a file,and d_filedir is a fold.")
 
-        
+
+
+#-拷贝文件夹至目标路径 copyFold        
 def copyFold(sourceDir,targetDir,foldname):
     sourceDir=sourceDir+"\\"+foldname
     print(sourceDir)
@@ -52,13 +64,14 @@ def copyFold(sourceDir,targetDir,foldname):
         #返回添加了新文件夹的目标绝对路径
         return os.path.abspath(targetDir)
 
+#-创建文件夹 createFold
 def createFold(sourcePath,foldname):
     newdir=os.path.join(sourcePath,foldname)
     if not os.path.exists(newdir):
         os.makedirs(newdir)
     return newdir
 
-
+#-改文件名和后缀 editFilename
 def editFilename(filePath,oldFilename,newFilename):
     os.rename(filePath+"\\"+oldFilename,filePath+"\\"+newFilename)
 
