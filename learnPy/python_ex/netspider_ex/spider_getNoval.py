@@ -37,15 +37,38 @@ def test_getNovalContent():
 ##	for sentence in text_list:
 ##	    print(sentence)
 
-def getNovalList(firstUrl):
-        req=requests.get(firstUrl,verify=False)
-        result=req.content.decode("gbk")
-        getlist_re=re.compile(r'<a href="([0-9]{8}.html)">')
-        contents_list=re.findall(getlist_re,result)
+#获取小说主页面的各个分页url，以列表形式返回获取到的结果
+def getNovalList(firstUrl,charSet,getlistRe):
+        #req = requests.get(firstUrl,verify=False) #https且需要证书
+        req = requests.get(firstUrl)   #http或https不需要证书
+        result = req.content.decode(charSet)
+        getlist_re = re.compile(getlistRe)
+        contents_list = re.findall(getlist_re,result)
         #print(contents_list)
         return contents_list
 
-def getNoval(url,charSet,titleRe=r"<title>(.*?)</title>",textRe=r'<div id="content">([\s\S]*?)</div>'):
+#获取玄界小说网小说简介
+def get_bookintro(firstUrl,bookintroRe,charSet):
+
+    #req = requests.get(firstUrl,verify=False) #https且需要证书
+    req = requests.get(firstUrl)   #http或https不需要证书
+    result = req.content.decode(charSet)
+    bookintro_re = re.compile(bookintroRe) #提取简介，由于正文有很多换行符，故要使用[\s\S]
+    bookintro = re.findall(bookintro_re,result)#找出正文
+    #bookintro_list = []#添加一个空列表，原来装处理后的正文
+    print("小说简介：")
+    for sentence in bookintro:
+        sentence=sentence.strip() #去掉每一句两边的空格
+        sentence=sentence.replace("&nbsp;","")
+        sentence=sentence.replace("<br/>","\t")
+        sentence=sentence.replace("<br />","\t")
+        sentence=sentence.replace("</div>","\t")
+        sentence=sentence.replace("&lt;/br&gt;&lt;/br&gt;","\t")
+        print(sentence)
+    time.sleep(2)
+
+#获取小说各分页正文
+def getNoval(url,charSet,titleRe,textRe):
     header=[{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"},
                 ]
     req_header={
@@ -61,9 +84,11 @@ def getNoval(url,charSet,titleRe=r"<title>(.*?)</title>",textRe=r'<div id="conte
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
         }
     
-    #req=requests.get(url,headers=header[0])
-    req=requests.get(url,params=req_header,verify=False)
+    req=requests.get(url,headers=header[0])
+    #req=requests.get(url,params=req_header,verify=False)
     result=req.content.decode(charSet) #获取响应内容，并解码
+
+    
     title_re=re.compile(titleRe) #文章标题提取正则
     text_re=re.compile(textRe) #提取正文，由于正文有很多换行符，故要使用[\s\S]
     title= re.findall(title_re,result)#找出标题
@@ -73,10 +98,11 @@ def getNoval(url,charSet,titleRe=r"<title>(.*?)</title>",textRe=r'<div id="conte
     print(title,end='\n')
     for sentence in text:
         sentence=sentence.strip() #去掉每一句两边的空格
-        sentence=sentence.replace("&nbsp;&nbsp;&nbsp;&nbsp;","")
+        sentence=sentence.replace("&nbsp;","")
         sentence=sentence.replace("<br/>","\t")
         sentence=sentence.replace("<br />","\t")
         sentence=sentence.replace("</div>","\t")
+        sentence=sentence.replace("&lt;/br&gt;&lt;/br&gt;","\t")
         print(sentence)
     time.sleep(2)
 if __name__=='__main__':
@@ -86,26 +112,46 @@ if __name__=='__main__':
 
         https://www.45zw.la/txt/30527/13765644.html 第一章
         https://www.45zw.la/txt/30527/17431132.html  最后一章
+
         
         """
-####        first_url=r"https://www.45zw.la/txt/30527/"
-####        list=getNovalList(first_url) #获取小说章节目录主页所有章节的链接号（格式：8位数字.html）
-####
+        #玄界小说网站
+        first_url = r"http://www.xuanjiexiaoshuo.com/yDxtu/"
+        getlistRe = r'<li><a href="([\w]{5,7}.html)">'
+        bookintro_re = r'<div id="bookintro"><p>([\s\S]*?)</p></div>'
+
+        #titleRe = r'<meta name="keywords" content="(.*?)" />'
+        titleRe=r"<title>(.*?)</title>"
+        textRe = r'<div id="content">([\s\S]*?)</div>'
+        charset="gbk"
+
+
+        list=getNovalList(first_url,charSet=charset,getlistRe=getlistRe) #获取小说章节目录主页所有章节的链接号（格式：8位数字.html）
+        #print(list)
+
+        #测试获取页面内容是否成功
 #####       test_getNovalContent()
-##        file=r'D:\LHQ_develop\python_ex\python_exdays\九占'
-##        fo=open(file,"a+")
-        titleRe = r'<meta name="keywords" content="(.*?)" />'
-        textRe = r'<div id="content"><p>([\s\S]*?)</p></div>'
-        charset="utf-8"
-        for i in range(0,101):
-                url="https://www.smxs.cc/book/mrczfhyf/"+str(10010+10*i)+".html"
-                #print(url)
-                getNoval(url,charset,titleRe=titleRe,textRe=textRe)
-##        #根据章节页来获取小说中正文和标题
-##        for item in list:
-##                url="https://www.45zw.la/txt/30527/"+str(item)
+
+        
+        #直接根据有规律的url获取小说内容
+        ##        for i in range(0,11):
+##                url="https://www.234bqg.com/book_27731/"+str(6772997+i)+".html"
 ##                #print(url)
-##                getNoval(url)
+##                getNoval(url,charset,titleRe=titleRe,textRe=textRe)
+
+
+         
+                
+
+        #小说简介
+        #get_bookintro(first_url, bookintroRe=bookintro_re, charSet=charset)
+
+        #根据章节页来获取小说中正文和标题
+        for item in list[102:]:
+                url=first_url+str(item)
+                print(url)
+                getNoval(url, charset, titleRe=titleRe, textRe=textRe)
+                time.sleep(1)
 
 
 

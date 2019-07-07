@@ -34,8 +34,13 @@ def uploadFile(projectSelector,fileDir):
     time.sleep(5)
     driver.find_element_by_xpath(projectSelector).click()
     time.sleep(5)
-    driver.find_element_by_xpath("//*[@id='uploads']/h3/div/button").click()
-    driver.find_element_by_xpath("//*[@id='uploads']/h3/div/ul/li[1]/a").click()
+    #定位到文件“2压缩 谷歌”文件夹
+    driver.find_element_by_xpath('//*/div[@class="dir-name"]/div[@class="link-name"]/a[@title="2压缩 谷歌"]').click
+    #在定位到的文件夹点击“上传文件”
+    time.sleep(3)
+    driver.find_element_by_xpath('//*/a[@class="btn btn-mini btn-upload-file"]').click()
+##    driver.find_element_by_xpath("//*[@id='uploads']/h3/div/button").click()
+##    driver.find_element_by_xpath("//*[@id='uploads']/h3/div/ul/li[1]/a").click()
     time.sleep(5)
     
     #点击上传文件后，通过定位弹出的windows对话框的句柄和控件上传fileDir文件
@@ -51,16 +56,19 @@ def uploadFile(projectSelector,fileDir):
 
 if __name__=='__main__':
     #变量
-    chromedriver=r"C:/Program Files (x86)/Google/Chrome/Application/chromedriver.exe"
+    chromedriver=r"D:\allWebDriver/chromedriver.exe"
     driver=webdriver.Chrome(chromedriver)
     email="huqiong.lin@cloudscreen.com"
     password="1qaz2wsx#"
-    filepath_1=r"E:\CS工作\临时测试结果\林\代码\改名改后缀拷贝文件夹\cloudPolicy改名改后缀拷贝.c"
+    filepath_1=r"F:\林\代码\压缩\压缩--改名.7z"
 
 
 
     #成功登录
     loginTower(email,password)
     uploadFile("//*[@data-access-id='18619755']",filepath_1)
+
+    #关闭浏览器
+    driver.quit()
         
     
