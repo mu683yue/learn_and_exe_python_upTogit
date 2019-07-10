@@ -87,7 +87,7 @@ def rename_filename(fileDir,add_string):
             if add_string not in file:
                 new_name = '{}{}.{}'.format("、".join(f[:-1]),add_string,f[-1])
                 os.rename(file,new_name)
-                print("修改了%s" % file)
+                print("修改文件名%s 为 %s" % (file,new_name))
 
 if __name__ == '__main__':
     add_string = "(婚后文)"
