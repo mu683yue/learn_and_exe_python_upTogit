@@ -5,6 +5,8 @@
 排序算法
 -简单选择排序 select_sort
 -冒泡排序 bubber_sort
+-归并排序  merge_sort
+-快速排序 quik_sort
 """
 
 def select_sort(origin_items,comp=lambda x,y:x<y):
@@ -54,7 +56,7 @@ def merge_sort(items, comp =lambda x,y:x<y):
     if len(items<2):
         return items[:]
     mid = len(items)//2
-    left = merge_sort(items[:mid],comp)
+    left = merge_sort(items[:mid],comp)   #递归
     right = merge_sort(items[mid:],comp)
     return merge(left,right,comp)
 def merge(items1,items2,comp):
@@ -64,12 +66,40 @@ def merge(items1,items2,comp):
     items = []
     index,index2=0,0
     while index1 < len(items1) and index2 < len(items2):
-        
+        if comp(items1[index1],items2[inex2]):
+            items.append(items1[index1])
+            index1 += 1
+        else:
+            items.append(items2[index2])
+            index2 += 2        
     items += items[index1:]
     items += items[index2:]
     return items
 
-                    
+
+#快速排序-选择去留对元素进行划分，左边都比枢纽小，右边都比枢纽大
+def quick_sort(origin_items,comp = lambda x,y:x<=y):
+    items = origin_items[:]
+    _quick_sort(items,0,len(items)-1,comp)
+    return items
+def _quik_sort(items,start,end,comp):
+    if start < end:
+        pos = _partition(items,start,end,comp)
+        _quick_sort(items,start,pos-1,comp)
+        _quick_sort(items,pos+1,end,comp)
+def _psrtition(items,start,end,comp):
+    pivot = items[end]
+    i = start-1
+    for j in range(start,end):
+        if comp(items[j],pivot):
+            i += 1
+            items[i],items[j] = items[j],items[i]
+    items[i+1],itmes[end] = items[end],items[i]
+    return i+1
+        
+
+
+    
     
                 
         
