@@ -4,14 +4,16 @@
 """
 -通过chrome浏览器登录Tower
 -将文件上传至Tower的文件夹
+-讲文件夹下所有文件上传至Tower
 
-version:1.0
-date:2019\5\27
+version:1.1
+origin_date:2019\5\27
+last_modify_date:2019\7\17
 author:LHQ
 """
 
 from selenium import webdriver
-import time
+import time,os
 import win32gui
 import win32con
 
@@ -34,7 +36,7 @@ def uploadFile(projectSelector,fileDir):
     time.sleep(5)
     driver.find_element_by_xpath(projectSelector).click()
     time.sleep(5)
-    #定位到文件“2压缩 谷歌”文件夹
+    #定位到文件“2”文件夹
     driver.find_element_by_xpath('//*/div[@class="dir-name"]/div[@class="link-name"]/a[@title="2"]').click()
     #在定位到的文件夹点击“上传文件”
     time.sleep(3)
@@ -59,14 +61,30 @@ if __name__=='__main__':
     #变量
     chromedriver=r"D:\allWebDriver/chromedriver.exe"
     driver=webdriver.Chrome(chromedriver)
-    email="huqiong.lin@cloudscreen.com"
-    password="1qaz2wsx#"
+    email="XX@XX.com"
+    password="XX"
+    #发送指定文件---适合于文件少的情况
     filepath_1=r'"F:\林\代码\copy\压缩后再次压缩.zip" "F:\移动\DBProviderClient--加内容改名.7z"'   #打开的弹框中添加多个文件的格式需要双引号，每个元素间有一个space
 
+    #发送fpath下所有文件
+    fpath = r"F:\移动\test"
+    fname_list = os.listdir(fpath)
+    f_list = []
+    #处理fname_list下所有文件名的格式
+    for item in fname_list:
+        file = os.path.join(fpath,item)
+        file = f'"{file}"'   #文件名需要以双引号引出
+        print(file)
+        f_list.append(file)
+    print(f_list)
+    files_path=(' ').join(f_list)   #在每个元素间已空格分隔（否则outlook识别不了文件）
+    print(files_path)
+
+    
 
     #成功登录
     loginTower(email,password)
-    uploadFile("//*[@data-access-id='18619755']",filepath_1)
+    uploadFile("//*[@data-access-id='18619755']",files_path)
 
     #关闭浏览器
    # driver.quit()
