@@ -16,7 +16,7 @@ import time
 
 def test_getNovalContent():
 	req1=requests.get("http://www.yznnw.com/files/article/html/9/9936/3367630.html")#先爬取楔子练手
-	result1=req1.content.decode("gbk") #获取响应内容，并解码
+	result1=req1.content.decode("gbk",errors="ignore") #获取响应内容，并解码
 	title_re=re.compile(r"<title>(.*?)</title>") #文章标题提取正则
 	text_re=re.compile(r'</center>([\s\S]*?)</div>') #提取正文，由于正文有很多换行符，故要使用[\s\S]
 	title = re.findall(title_re,result1)#找出标题
@@ -52,7 +52,7 @@ def get_bookintro(firstUrl,bookintroRe,charSet):
 
     #req = requests.get(firstUrl,verify=False) #https且需要证书
     req = requests.get(firstUrl)   #http或https不需要证书
-    result = req.content.decode(charSet)
+    result = req.content.decode(charSet,errors="ignore")
     bookintro_re = re.compile(bookintroRe) #提取简介，由于正文有很多换行符，故要使用[\s\S]
     bookintro = re.findall(bookintro_re,result)#找出正文
     #bookintro_list = []#添加一个空列表，原来装处理后的正文
@@ -86,7 +86,7 @@ def getNoval(url,charSet,titleRe,textRe):
     
     req=requests.get(url,headers=header[0])
     #req=requests.get(url,params=req_header,verify=False)
-    result=req.content.decode(charSet) #获取响应内容，并解码
+    result=req.content.decode(charSet,errors="ignore") #获取响应内容，并解码
 
     
     title_re=re.compile(titleRe) #文章标题提取正则
@@ -144,10 +144,10 @@ if __name__=='__main__':
                 
 
         #小说简介
-        #get_bookintro(first_url, bookintroRe=bookintro_re, charSet=charset)
+        get_bookintro(first_url, bookintroRe=bookintro_re, charSet=charset)
 
         #根据章节页来获取小说中正文和标题
-        for item in list[102:]:
+        for item in list:
                 url=first_url+str(item)
                 print(url)
                 getNoval(url, charset, titleRe=titleRe, textRe=textRe)
