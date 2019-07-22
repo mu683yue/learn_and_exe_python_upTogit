@@ -41,7 +41,7 @@ def test_getNovalContent():
 def getNovalList(firstUrl,charSet,getlistRe):
         #req = requests.get(firstUrl,verify=False) #https且需要证书
         req = requests.get(firstUrl)   #http或https不需要证书
-        result = req.content.decode(charSet)
+        result = req.content.decode(charSet,errors="ignore")
         getlist_re = re.compile(getlistRe)
         contents_list = re.findall(getlist_re,result)
         #print(contents_list)
@@ -116,7 +116,7 @@ if __name__=='__main__':
         
         """
         #玄界小说网站
-        first_url = r"http://www.xuanjiexiaoshuo.com/yDxtu/"
+        first_url = r"http://www.xuanjiexiaoshuo.com/70MfD/"
         getlistRe = r'<li><a href="([\w]{5,7}.html)">'
         bookintro_re = r'<div id="bookintro"><p>([\s\S]*?)</p></div>'
 
