@@ -86,9 +86,11 @@ def getNoval(url,charSet,titleRe,textRe):
     
     req=requests.get(url,headers=header[0])
     #req=requests.get(url,params=req_header,verify=False)
+    while req.status_code == "503":
+            time.sleep(20)
+
     result=req.content.decode(charSet,errors="ignore") #获取响应内容，并解码
 
-    
     title_re=re.compile(titleRe) #文章标题提取正则
     text_re=re.compile(textRe) #提取正文，由于正文有很多换行符，故要使用[\s\S]
     title= re.findall(title_re,result)#找出标题
@@ -99,12 +101,15 @@ def getNoval(url,charSet,titleRe,textRe):
     for sentence in text:
         sentence=sentence.strip() #去掉每一句两边的空格
         sentence=sentence.replace("&nbsp;","")
+        sentence=sentence.replace("&quot;","")
         sentence=sentence.replace("<br/>","\t")
         sentence=sentence.replace("<br />","\t")
         sentence=sentence.replace("</div>","\t")
         sentence=sentence.replace("&lt;/br&gt;&lt;/br&gt;","\t")
         print(sentence)
     time.sleep(2)
+    return sentence
+    
 if __name__=='__main__':
         """
         爬取网站第一章和最后一章url：
@@ -116,13 +121,16 @@ if __name__=='__main__':
         
         """
         #玄界小说网站
-        first_url = r"http://www.xuanjiexiaoshuo.com/70MfD/"
-        getlistRe = r'<li><a href="([\w]{5,7}.html)">'
+        #first_url = r"http://www.xuanjiexiaoshuo.com/jKrV2/"
+        first_url = r"http://www.bxzww.com/bx/38/38469/"
+        #getlistRe = r'<li><a href="([\w]{5,7}.html)">'
+        getlistRe = r'<li><a href="(http.*?)">'
         bookintro_re = r'<div id="bookintro"><p>([\s\S]*?)</p></div>'
 
         #titleRe = r'<meta name="keywords" content="(.*?)" />'
         titleRe=r"<title>(.*?)</title>"
-        textRe = r'<div id="content">([\s\S]*?)</div>'
+        #textRe = r'<div id="content">([\s\S]*?)</div>'
+        textRe =r'<div id="htmlContent" class="contentbox">([\s\S]*?)</div>'
         charset="gbk"
 
 
@@ -144,13 +152,18 @@ if __name__=='__main__':
                 
 
         #小说简介
-        get_bookintro(first_url, bookintroRe=bookintro_re, charSet=charset)
+        #get_bookintro(first_url, bookintroRe=bookintro_re, charSet=charset)
 
         #根据章节页来获取小说中正文和标题
         for item in list:
-                url=first_url+str(item)
+                #url=first_url+str(item)
+                url = str(item)
                 print(url)
-                getNoval(url, charset, titleRe=titleRe, textRe=textRe)
+                text = getNoval(url, charset, titleRe=titleRe, textRe=textRe)
+                service_fail_503 = "503 Service Temporarily Unavailable"
+                while service_fail_503 in text:
+                    time.sleep(30)     #爬取速度过快会服务器超时，添加等待时间
+                    getNoval(url, charset, titleRe=titleRe, textRe=textRe)
                 time.sleep(1)
 
 
