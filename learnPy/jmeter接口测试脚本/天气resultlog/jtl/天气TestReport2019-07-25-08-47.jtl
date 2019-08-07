@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testResults version="1.2">
+<httpSample t="23100" it="0" lt="0" ct="23099" ts="1564058854428" s="false" lb="查“重启”天气" rc="Non HTTP response code: java.net.ConnectException" rm="Non HTTP response message: Connection timed out: connect" tn="Thread Group 1-1" dt="text" by="2492" sby="0" ng="1" na="1"/>
+
+<httpSample t="283" it="0" lt="283" ct="153" ts="1564058881178" s="true" lb="获取城市代码" rc="200" rm="OK" tn="查询天气 1-1" dt="text" by="2652" sby="194" ng="1" na="1">
+  <assertionResult>
+    <name>Response Assertion</name>
+    <failure>false</failure>
+    <error>false</error>
+  </assertionResult>
+</httpSample>
+<httpSample t="202" it="0" lt="122" ct="31" ts="1564058881498" s="true" lb="获取城市天气预报" rc="200" rm="OK" tn="查询天气 1-1" dt="text" by="85762" sby="147" ng="1" na="1"/>
+
+</testResults>
