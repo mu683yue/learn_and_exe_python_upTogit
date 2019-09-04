@@ -6,7 +6,7 @@ import os.path
 from framework.logger import Logger
  
 # create a logger instance
-logger = Logger(logger="BasePage").getlog()
+logger = Logger(logger="BasePage").get_logger()
  
  
 class BasePage(object):
@@ -78,8 +78,8 @@ class BasePage(object):
         if selector_by == "i" or selector_by == 'id':
             try:
                 element = self.driver.find_element_by_id(selector_value)
-                logger.info("Had find the element \' %s \' successful "
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
+                logger.info(f"Had find the element '{element.text}' successful "
+                            f"by {selector_by} via value: {selector_value} ")
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: %s" % e)
                 self.get_windows_img()   # take screenshot
@@ -96,8 +96,8 @@ class BasePage(object):
         elif selector_by == "x" or selector_by == 'xpath':
             try:
                 element = self.driver.find_element_by_xpath(selector_value)
-                logger.info("Had find the element \' %s \' successful "
-                                "by %s via value: %s " % (element.text, selector_by, selector_value))
+                logger.info(f"Had find the element '{element.text} successful "
+                                f"by {selector_by} via value: {selector_value} ")
             except NoSuchElementException as e:
                 logger.error("NoSuchElementException: %s" % e)
                 self.get_windows_img()
@@ -115,9 +115,9 @@ class BasePage(object):
         el.clear()
         try:
             el.send_keys(text)
-            logger.info("Had type \' %s \' in inputBox" % text)
+            logger.info(f"Had type {text} in inputBox")
         except NameError as e:
-            logger.error("Failed to type in input box with %s" % e)
+            logger.error(f"Failed to type in input box with {e}")
             self.get_windows_img()
  
     # 清除文本框

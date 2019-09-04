@@ -1,0 +1,24 @@
+2019-09-04 13:17:49,818 - BrowserEngine - INFO - You had select Chrome browser.
+2019-09-04 13:17:49,901 - BrowserEngine - INFO - The test server url is: https://www.baidu.com
+2019-09-04 13:18:11,912 - BrowserEngine - INFO - Starting Chrome browser.
+2019-09-04 13:18:14,334 - BrowserEngine - INFO - Open url: https://www.baidu.com
+2019-09-04 13:18:18,578 - BrowserEngine - INFO - Maximize the current window.
+2019-09-04 13:18:18,651 - BrowserEngine - INFO - Set implicitly wait 10 seconds.
+2019-09-04 13:18:18,776 - BasePage - INFO - Had find the element '  ' successful by id via value: kw 
+2019-09-04 13:18:19,257 - BasePage - INFO - Had type ' selenium ' in inputBox
+2019-09-04 13:18:19,856 - BasePage - INFO - Had find the element '  ' successful by xpath via value: //*[@id='su'] 
+2019-09-04 13:18:21,815 - BasePage - INFO - The element '  ' was clicked.
+2019-09-04 13:18:24,519 - BasePage - INFO - Had take screenshot and save to folder : /screenshots
+2019-09-04 13:18:24,586 - BasePage - INFO - Current page title is selenium_百度搜索
+2019-09-04 13:18:27,307 - BrowserEngine - INFO - You had select Chrome browser.
+2019-09-04 13:18:27,347 - BrowserEngine - INFO - The test server url is: https://www.baidu.com
+2019-09-04 13:18:38,992 - BrowserEngine - INFO - Starting Chrome browser.
+2019-09-04 13:18:40,523 - BrowserEngine - INFO - Open url: https://www.baidu.com
+2019-09-04 13:18:44,721 - BrowserEngine - INFO - Maximize the current window.
+2019-09-04 13:18:44,766 - BrowserEngine - INFO - Set implicitly wait 10 seconds.
+2019-09-04 13:18:44,853 - BasePage - INFO - Had find the element '  ' successful by id via value: kw 
+2019-09-04 13:18:45,150 - BasePage - INFO - Had type ' 783中文输入 ' in inputBox
+2019-09-04 13:18:45,501 - BasePage - INFO - Had find the element '  ' successful by xpath via value: //*[@id='su'] 
+2019-09-04 13:18:45,664 - BasePage - INFO - The element '  ' was clicked.
+2019-09-04 13:18:48,006 - BasePage - INFO - Had take screenshot and save to folder : /screenshots
+2019-09-04 13:18:48,125 - BasePage - INFO - Current page title is 783中文输入_百度搜索

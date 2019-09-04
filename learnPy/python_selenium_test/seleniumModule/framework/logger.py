@@ -14,7 +14,7 @@ class Logger(object):
 
         #创建一个logger
         self.logger = logging.getLogger(logger)
-        self.logger.setlevel(logging.DEBUG)
+        self.logger.setLevel(logging.DEBUG)
 
         #创建一个handler,用于写入日志文件
         rq = time.strftime("%Y%m%d%H%M%S",time.localtime())
